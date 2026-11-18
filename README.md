@@ -28,6 +28,8 @@ version like any other.
 
 ## Casks
 
-| Cask        | Source                         |
-| ----------- | ------------------------------ |
-| `alacritty` | github.com/alacritty/alacritty |
+| Cask                     | Source                                   |
+| ------------------------ | ---------------------------------------- |
+| `alacritty`              | github.com/alacritty/alacritty           |
+| `qview`                  | github.com/jurplel/qView                 |
+| `ultimate-vocal-remover` | github.com/Anjok07/ultimatevocalremovergui |
