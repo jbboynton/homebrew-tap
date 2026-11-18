@@ -42,14 +42,21 @@ jobs:
 
       # Nobody reviews this tap, so a bump lands as soon as it is opened.
       # `brew bump` has already downloaded the release and recorded its
-      # checksum by then.
+      # checksum by then. Only the bot's own branches in this repository
+      # qualify: a pull request from a fork is never merged here, whatever
+      # its branch is called.
       - name: Merge the bumps
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr list --repo "$GITHUB_REPOSITORY" --state open \
-            --json number,headRefName \
-            --jq '.[] | select(.headRefName | startswith("bump-")) | .number' |
+            --json number,headRefName,isCrossRepository,author \
+            --jq '.[]
+              | select(.isCrossRepository == false)
+              | select(.author.is_bot == true)
+              | select(.author.login == "app/github-actions")
+              | select(.headRefName | startswith("bump-"))
+              | .number' |
             while read -r number
             do
               gh pr merge "$number" --repo "$GITHUB_REPOSITORY" \
