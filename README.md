@@ -1,18 +1,33 @@
-# Jbboynton Tap
+# jbboynton/tap
 
-## How do I install these formulae?
+Homebrew casks for apps that homebrew/cask has disabled because their
+developers do not notarize them. Each cask here is the original with
+the disable removed, plus a step that clears the quarantine flag, so
+the app installs and opens without a manual approval.
 
-`brew install jbboynton/tap/<formula>`
+## Use
 
-Or `brew tap jbboynton/tap` and then `brew install <formula>`.
+```sh
+brew tap jbboynton/tap
+brew trust jbboynton/tap
+brew install --cask jbboynton/tap/alacritty
+```
 
-Or, in a `brew bundle` `Brewfile`:
+In a `Brewfile`:
 
 ```ruby
 tap "jbboynton/tap"
-brew "<formula>"
+cask "jbboynton/tap/alacritty"
 ```
 
-## Documentation
+## Updates
 
-`brew help`, `man brew` or check [Homebrew's documentation](https://docs.brew.sh).
+A workflow checks each app's upstream releases once a day, bumps the
+cask and merges the change. `brew upgrade` then installs the new
+version like any other.
+
+## Casks
+
+| Cask        | Source                         |
+| ----------- | ------------------------------ |
+| `alacritty` | github.com/alacritty/alacritty |

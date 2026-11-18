@@ -39,3 +39,19 @@ jobs:
           HOMEBREW_GIT_COMMITTER_EMAIL: ${{ steps.git_setup.outputs.email }}
           TAP_NAME: ${{ steps.set-up-homebrew.outputs.tap-name }}
         run: brew bump --no-fork --open-pr --bump-synced --tap="$TAP_NAME"
+
+      # Nobody reviews this tap, so a bump lands as soon as it is opened.
+      # `brew bump` has already downloaded the release and recorded its
+      # checksum by then.
+      - name: Merge the bumps
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr list --repo "$GITHUB_REPOSITORY" --state open \
+            --json number,headRefName \
+            --jq '.[] | select(.headRefName | startswith("bump-")) | .number' |
+            while read -r number
+            do
+              gh pr merge "$number" --repo "$GITHUB_REPOSITORY" \
+                --squash --delete-branch
+            done
